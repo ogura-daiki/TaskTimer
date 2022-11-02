@@ -8,7 +8,7 @@ const deserializer = (name, value) => {
       convert: () => value
     }),
     (name, value) => ({
-      cond: typeof value?.type === "task",
+      cond: value?.type === "task",
       convert: () => setProto(value, TaskProto),
     }),
   ];
