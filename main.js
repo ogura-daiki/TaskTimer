@@ -122,6 +122,7 @@ class TaskTimer extends LitElement {
       if (!task.to) task.to = Date.now();
     });
     this.insertTask(this.insertTo, newTask(this.inputName, this.inputMemo));
+    this.#saveTasks();
     this.inputName = "";
     this.inputMemo = "";
   }
@@ -145,7 +146,10 @@ class TaskTimer extends LitElement {
                   id="inputName"
                   placeholder="タイトル"
                   value=${this.inputName}
-                  @input=${e => this.inputName = e.target.value}
+                  @input=${e => {
+                    this.inputName = e.target.value
+                    this.#saveTasks();
+                  }}
                   @keydown=${e => { if (e.key === "Enter" && e.ctrlKey) this.addTask(); }}
                 >
                 <button
@@ -162,7 +166,10 @@ class TaskTimer extends LitElement {
                   id="inputMemo"
                   class="grow noresize"
                   placeholder="メモ"
-                  @input=${e => this.inputMemo = e.target.value}
+                  @input=${e => {
+                    this.inputMemo = e.target.value;
+                    this.#saveTasks();
+                  }}
                   @keydown=${e => { if (e.key === "Enter" && e.ctrlKey) this.addTask(); }}
                 >${this.inputMemo}</textarea>
                 <button
@@ -205,7 +212,10 @@ class TaskTimer extends LitElement {
     return html`
       <input
         type="time" value="${task.getTimeStr(name)}"
-        @input=${e => task.setTimeStr(name, e.target.value)}
+        @input=${e => {
+          task.setTimeStr(name, e.target.value);
+          this.#saveTasks();
+        }}
       >
       `
   }
