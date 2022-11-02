@@ -1,7 +1,7 @@
 import { setProto } from "../libs/ModelUtil.js";
 import { proto as TaskProto } from "../Model/Task.js";
 
-const receiver = (name, value) => {
+const deserializer = (name, value) => {
   const patterns = [
     (name, value) => ({
       cond: typeof value !== "object",
@@ -22,13 +22,13 @@ const receiver = (name, value) => {
 }
 
 export default {
-  receiver,
   migrations:[
     {
       v: 0,
       up: () => {
         return [];
-      }
+      },
+      deserializer,
     },
   ],
 };
