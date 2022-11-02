@@ -148,7 +148,6 @@ class TaskTimer extends LitElement {
                 value=${this.inputName}
                 @input=${e => {
                   this.inputName = e.target.value
-                  this.#saveTasks();
                 }}
                 @keydown=${e => { if (e.key === "Enter" && e.ctrlKey) this.addTask(); }}
               >
@@ -166,12 +165,12 @@ class TaskTimer extends LitElement {
                 id="inputMemo"
                 class="grow noresize"
                 placeholder="メモ"
+                .value=${this.inputMemo}
                 @input=${e => {
                   this.inputMemo = e.target.value;
-                  this.#saveTasks();
                 }}
                 @keydown=${e => { if (e.key === "Enter" && e.ctrlKey) this.addTask(); }}
-              >${this.inputMemo}</textarea>
+              ></textarea>
               <button
                 @click=${e => {
                   this.inputMemo = "";
@@ -226,9 +225,16 @@ class TaskTimer extends LitElement {
           type="text" .value=${task.name}
           @input=${e => {
             task.name = e.target.value;
+            this.#saveTasks();
           }} style="font-size:1.2em"
         >
-        <textarea @input=${e => task.memo = e.target.value}>${task.memo}</textarea>
+        <textarea 
+          .value=${task.memo}
+          @input=${e => {
+            task.memo = e.target.value;
+            this.#saveTasks();
+          }}
+        ></textarea>
         <div class="row">
           ${this.timeInput(task, "from")}
           <span>～</span>
