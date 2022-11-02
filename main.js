@@ -145,7 +145,7 @@ class TaskTimer extends LitElement {
                 class="grow"
                 id="inputName"
                 placeholder="タイトル"
-                value=${this.inputName}
+                .value=${this.inputName??""}
                 @input=${e => {
                   this.inputName = e.target.value
                 }}
@@ -165,7 +165,7 @@ class TaskTimer extends LitElement {
                 id="inputMemo"
                 class="grow noresize"
                 placeholder="メモ"
-                .value=${this.inputMemo}
+                .value=${this.inputMemo??""}
                 @input=${e => {
                   this.inputMemo = e.target.value;
                 }}
