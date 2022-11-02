@@ -115,10 +115,6 @@ class TaskTimer extends LitElement {
   insertTask(idx, task){
     this.tasks.splice(idx, 0, task);
   }
-  getTimeStr(time = new Date()) {
-    const pad0 = num => (""+num).padStart(2,"0");
-    return `${("" + time.getHours()).padStart(2, 0)}:${("" + time.getMinutes()).padStart(2, 0)}`;
-  }
   addTask() {
     if (!this.inputName) return;
     this.openAddDialog = false;
