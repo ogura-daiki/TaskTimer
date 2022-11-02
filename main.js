@@ -1,9 +1,11 @@
 
 import { LitElement, html, css, live, repeat } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
 
-let cnt = 0;
-const dateFormat = new Intl.DateTimeFormat('ja-JP', { dateStyle: 'short' })
-const timeFormat = new Intl.DateTimeFormat('ja-JP', { timeStyle: 'short' })
+import LocalStorageStore from 'https://ogura-daiki.github.io/store/LocalStorageStore.js';
+import Models from "./Migrations/index.js";
+import { newTask } from "./Model/Task.js";
+
+const store = new LocalStorageStore(Models);
 
 class TaskTimer extends LitElement {
   static get properties() {
@@ -103,26 +105,27 @@ class TaskTimer extends LitElement {
   constructor() {
     super();
 
-    this.tasks = JSON.parse(localStorage.getItem("tasktimer-tasks") || "[]");
+    this.tasks = store.get("Tasks");
     this.openAddDialog = false;
     this.openCopyDialog = false;
   }
+  #saveTasks(){
+    store.set("Tasks", this.tasks);
+  }
+  insertTask(idx, task){
+    this.tasks.splice(idx, 0, task);
+  }
   getTimeStr(time = new Date()) {
+    const pad0 = num => (""+num).padStart(2,"0");
     return `${("" + time.getHours()).padStart(2, 0)}:${("" + time.getMinutes()).padStart(2, 0)}`;
   }
   addTask() {
     if (!this.inputName) return;
     this.openAddDialog = false;
     this.tasks.forEach(task => {
-      if (!task.to) task.to = this.getTimeStr();
-    })
-    this.tasks.splice(this.insertTo, 0, {
-      id: cnt++,
-      name: this.inputName,
-      memo: this.inputMemo,
-      from: this.getTimeStr(),
-      to: undefined,
+      if (!task.to) task.to = Date.now();
     });
+    this.insertTask(this.insertTo, newTask(this.inputName, this.inputMemo));
     this.inputName = "";
     this.inputMemo = "";
   }
@@ -135,8 +138,8 @@ class TaskTimer extends LitElement {
                 タスクを追加
               </div>
               <button @click=${e => {
-        this.openAddDialog = false;
-      }}>×</button>
+                this.openAddDialog = false;
+              }}>×</button>
             </div>
             <div class="col grow content" style="overflow-y:scroll">
               <div class="row">
@@ -151,9 +154,9 @@ class TaskTimer extends LitElement {
                 >
                 <button
                   @click=${e => {
-        this.inputName = "";
-        this.renderRoot.querySelector("#inputName").value = "";
-      }}
+                    this.inputName = "";
+                    this.renderRoot.querySelector("#inputName").value = "";
+                  }}
                 >
                   ×
                 </button>
@@ -168,9 +171,9 @@ class TaskTimer extends LitElement {
                 >${this.inputMemo}</textarea>
                 <button
                   @click=${e => {
-        this.inputMemo = "";
-        this.renderRoot.querySelector("#inputMemo").value = "";
-      }}
+                    this.inputMemo = "";
+                    this.renderRoot.querySelector("#inputMemo").value = "";
+                  }}
                 >
                   ×
                 </button>
@@ -193,19 +196,20 @@ class TaskTimer extends LitElement {
             </div>
             <div class="col grow content" style="overflow-y:scroll">
               <textarea class="noresize grow">${this.tasks.map(task => {
-      return `${task.from}～${task.to || this.getTimeStr()} ${task.name}${task.memo ? `\n${task.memo.split("\n").map(s => "  " + s).join("\n")}` : ""}`;
-    }).reverse().join("\n")
-      }</textarea>
+                  return `${task.getTimeStr("from")}～${task.getTimeStr("to")} ${task.name}${task.memo ? `\n${task.memo.split("\n").map(s => "  " + s).join("\n")}` : ""}`;
+                }).reverse().join("\n")
+              }</textarea>
             </div>
           </div>
         </div>
       `;
   }
   timeInput(task, name) {
+    console.log(task, name, task.getTimeStr(name))
     return html`
       <input
-        type="time" value="${task[name]}"
-        @input=${e => task[name] = e.target.value}
+        type="time" value="${task.getTimeStr(name)}"
+        @input=${e => task.setTimeStr(name, e.target.value)}
       >
       `
   }
@@ -229,9 +233,9 @@ class TaskTimer extends LitElement {
             <button
               ?disabled=${task.to}
               @click=${e => {
-        task.to = this.getTimeStr();
-        this.requestUpdate();
-      }}
+                task.to = Date.now();
+                this.requestUpdate();
+              }}
             >
               完了
             </button>
@@ -271,7 +275,7 @@ class TaskTimer extends LitElement {
       `;
   }
   render() {
-    localStorage.setItem("tasktimer-tasks", JSON.stringify(this.tasks));
+    this.#saveTasks();
     return html`
         <div class="col gap-0 main-content">
           <span class="pageTitle">打刻（簡易）</span>

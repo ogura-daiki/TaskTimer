@@ -1,7 +1,15 @@
 import { createId, setProto } from "../libs/ModelUtil.js";
 
 const proto = {
-  
+  _dt2TimeStr(dt){
+    const pad0 = num => (""+num).padStart(2,"0");
+    return `${pad0(dt.getHours())}:${pad0(dt.getMinutes())}`;
+  },  
+  getTimeStr(name) {
+    if(!this[name]) return;
+    const dateTime = this[name];
+    return this._dt2TimeStr(new Date(dateTime));
+  }
 };
 
 const newTask = (name, memo="") => {
@@ -16,8 +24,8 @@ const newTask = (name, memo="") => {
 };
 
 const copyTask = (task) => {
-  const task = newTask(task.name, task.memo);
-  return Object.assign(task, {from:task.from, to:task.to});
+  const newTask = newTask(task.name, task.memo);
+  return Object.assign(newTask, {from:task.from, to:task.to});
 }
 
 export {
