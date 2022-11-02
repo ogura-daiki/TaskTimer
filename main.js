@@ -256,6 +256,7 @@ class TaskTimer extends LitElement {
             @click=${e => {
               if (confirm(`タスク名：${task.name} の完了を取り消しますか？`)) {
                 task.to = undefined;
+                this.#saveTasks();
                 this.requestUpdate();
               }
             }}
@@ -274,6 +275,7 @@ class TaskTimer extends LitElement {
               if (confirm(`タスク名：${task.name}を削除しますか？`)) {
                 const idx = this.tasks.findIndex(t => t === task);
                 this.tasks.splice(idx, 1);
+                this.#saveTasks();
                 this.requestUpdate();
               }
             }}
