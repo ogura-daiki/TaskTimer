@@ -245,6 +245,7 @@ class TaskTimer extends LitElement {
             ?disabled=${task.to}
             @click=${e => {
               task.to = Date.now();
+              this.#saveTasks();
               this.requestUpdate();
             }}
           >
