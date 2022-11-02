@@ -289,7 +289,6 @@ class TaskTimer extends LitElement {
     `;
   }
   render() {
-    this.#saveTasks();
     return html`
       <div class="col gap-0 main-content">
         <span class="pageTitle">打刻（簡易）</span>
