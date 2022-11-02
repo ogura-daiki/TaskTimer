@@ -207,7 +207,6 @@ class TaskTimer extends LitElement {
     `;
   }
   timeInput(task, name) {
-    console.log(task, name, task.getTimeStr(name))
     return html`
     <input
       type="time" value="${task.getTimeStr(name)}"
