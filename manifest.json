@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "name": "TaskTimer",
+  "short_name": "TaskTimer",
+  "Scope": "/TaskTimer/",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "my TaskTimer app",
+  "icons": [{
+    "src": "images/icons/icon256.png",
+    "sizes": "256x256",
+    "type": "image/png"
+  }]
+}
