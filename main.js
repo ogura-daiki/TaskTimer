@@ -346,13 +346,24 @@ class TaskTimer extends LitElement {
             this.insertTo = 0;
             this.openAddDialog = true;
           }}>追加</button>
-          ${this.templates.map(template=>html`
-            <button @click=${e => {
-              this.insertTo = 0;
-              this.inputName = template.name;
-              this.inputMemo = template.memo;
-              this.openAddDialog = true;
-            }}>${template.label}</button>
+          ${this.templates.map((template, idx)=>html`
+            <button
+              @click=${e => {
+                this.insertTo = 0;
+                this.inputName = template.name;
+                this.inputMemo = template.memo;
+                this.openAddDialog = true;
+              }}
+              @contextmenu=${e=>{
+                console.log(template);
+                e.preventDefault();
+                if(confirm(`テンプレート：${template.label}を削除しますか？`)){
+                  this.templates.splice(idx, 1);
+                  this.requestUpdate();
+                  this.#saveTemplates();
+                }
+              }}
+            >${template.label}</button>
           `)}
           <button @click=${e => this.openTemplateDialog = true}>テンプレート追加</button>
           <button @click=${e => this.openCopyDialog = true}>
