@@ -11,8 +11,10 @@ class TaskTimer extends LitElement {
   static get properties() {
     return {
       tasks: { type: Array },
+      templates: { type: Array },
       openAddDialog: { state: true },
       openCopyDialog: { state: true },
+      openTemplateDialog: { state: true },
     }
   }
   static get styles() {
@@ -106,8 +108,10 @@ class TaskTimer extends LitElement {
     super();
 
     this.tasks = store.get("Tasks");
+    this.templates = store.get("Templates");
     this.openAddDialog = false;
     this.openCopyDialog = false;
+    this.openTemplateDialog = false;
   }
   #saveTasks(){
     store.set("Tasks", this.tasks);
@@ -201,6 +205,31 @@ class TaskTimer extends LitElement {
                 return `${task.getTimeStr("from")}～${task.getTimeStr("to")??task._dt2TimeStr(new Date())} ${task.name}${task.memo ? `\n${task.memo.split("\n").map(s => "  " + s).join("\n")}` : ""}`;
               }).reverse().join("\n")
             }</textarea>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  templateDialog() {
+    const input = {
+      label:"",
+      name:"",
+      memo:"",
+    }
+    return html`
+      <div class="backdrop centering">
+        <div class="dialog col gap-0">
+          <div class="row bar">
+            <div class="title grow">
+              テンプレート追加
+            </div>
+            <button @click=${e => this.openTemplateDialog = false}>×</button>
+          </div>
+          <div class="col grow content" style="overflow-y:scroll">
+            <input ></input>
+            <input ></input>
+            <textarea class="noresize grow"></textarea>
+            <button>追加</button>
           </div>
         </div>
       </div>
@@ -304,16 +333,17 @@ class TaskTimer extends LitElement {
             this.insertTo = 0;
             this.openAddDialog = true;
           }}>追加</button>
-          <button @click=${e => {
-            this.insertTo = 0;
+            <button @click=${e => {
+              this.insertTo = 0;
             this.inputName = "トイレ";
-            this.openAddDialog = true;
+              this.openAddDialog = true;
           }}>トイレ</button>
           <button @click=${e => {
             this.insertTo = 0;
             this.inputName = "相談MTG";
             this.openAddDialog = true;
           }}>相談MTG</button>
+          <button @click=${e => this.openTemplateDialog = true}>テンプレート追加</button>
           <button @click=${e => this.openCopyDialog = true}>
             書き出し
           </button>
@@ -329,6 +359,7 @@ class TaskTimer extends LitElement {
       </div>
       ${(this.openAddDialog ? () => this.addDialog() : () => "")()}
       ${(this.openCopyDialog ? () => this.copyDialog() : () => "")()}
+      ${(this.openTemplateDialog ? () => this.templateDialog() : () => "")()}
     `;
   }
   updated() {
