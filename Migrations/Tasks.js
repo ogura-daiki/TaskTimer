@@ -4,6 +4,10 @@ import { proto as TaskProto } from "../Model/Task.js";
 const deserializer = (name, value) => {
   const patterns = [
     (name, value) => ({
+      cond: ["from", "to"].includes(name),
+      convert: () => [new Date(value), console.log(name, new Date(value))][0],
+    }),
+    (name, value) => ({
       cond: typeof value !== "object",
       convert: () => value
     }),

@@ -8,8 +8,15 @@ const proto = {
   getTimeStr(name) {
     if(!this[name]) return;
     const dateTime = this[name];
-    return this._dt2TimeStr(new Date(dateTime));
-  }
+    return this._dt2TimeStr(dateTime);
+  },
+  setTimeStr(name, value){
+    if(!this[name]) return;
+    const [hours, minutes] = value.split(":").map(v=>+v);
+    const dateTime = this[name];
+    dateTime.setHours(hours);
+    dateTime.setMinutes(minutes);
+  },
 };
 
 const newTask = (name, memo="") => {
@@ -18,7 +25,7 @@ const newTask = (name, memo="") => {
     type:"task",
     name,
     memo,
-    from:Date.now(),
+    from:new Date(),
     to:undefined,
   }, proto);
 };

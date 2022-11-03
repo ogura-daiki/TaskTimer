@@ -119,7 +119,7 @@ class TaskTimer extends LitElement {
     if (!this.inputName) return;
     this.openAddDialog = false;
     this.tasks.forEach(task => {
-      if (!task.to) task.to = Date.now();
+      if (!task.to) task.to = new Date();
     });
     this.insertTask(this.insertTo, newTask(this.inputName, this.inputMemo));
     this.#saveTasks();
@@ -244,7 +244,7 @@ class TaskTimer extends LitElement {
           <button
             ?disabled=${task.to}
             @click=${e => {
-              task.to = Date.now();
+              task.to = new Date();
               this.#saveTasks();
               this.requestUpdate();
             }}
