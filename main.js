@@ -5,6 +5,7 @@ import LocalStorageStore from 'https://ogura-daiki.github.io/store/LocalStorageS
 import Models from "./Migrations/index.js";
 import { newTask } from "./Model/Task.js";
 import { newTemplate } from "./Model/Template.js";
+import iconFonts from "./libs/iconFonts.js";
 
 const store = new LocalStorageStore(Models);
 
@@ -19,91 +20,94 @@ class TaskTimer extends LitElement {
     }
   }
   static get styles() {
-    return css`
-    :host{
-      display:block;
-      position:relative;
-    }
-    .col{
-      display:flex;
-      flex-flow:column nowrap;
-      gap:8px;
-    }
-    .row{
-      display:flex;
-      flex-flow:row nowrap;
-      gap:8px;
-    }
-    .grow{
-      flex-basis:0px;
-      flex-grow:1;
-    }
-    .centering{
-      display:flex;
-      place-items:center;
-      justify-content:center;
-    }
-    .gap-0{
-      gap:0px;
-    }
-    .gap-16{
-      gap:16px;
-    }
-    .main-content{
-      width:100%;
-      height:100%;
-    }
-    .main-content>* + *{
-      border-top:1px solid lightgray;
-    }
-    .pageTitle{
-      padding:8px 16px;
-      font-size:1.6em;
-    }
-    .backdrop{
-      position:absolute;
-      width:100%;
-      height:100%;
-      top:0px;
-      left:0px;
-      background:rgba(0,0,0,.2);
-    }
-    .dialog{
-      background:rgb(240,240,240);
-      min-height:max(100px, min-content);
-      max-height:70vh;
-      height:300px;
-      width:min(max(100px, 100% - 36px), 300px);
-    }
-    .dialog .bar{
-      border-bottom:1px solid lightgray;
-      padding:8px;
-    }
-    .dialog .content{
-      overflow-y:scroll;
-      padding:8px;
-    }
-    .task-item{
-      padding:8px;
-      border-radius:8px;
-      border:1px solid lightgray;
-    }
-    .menu{
-      padding:8px;
-    }
-    textarea{
-      resize:vertical;
-    }
-    .noresize{
-      resize:none;
-    }
-    .task_list{
-      overflow-y:scroll;
-      padding:8px;
-      box-sizing:border-box;
-      flex-direction:column-reverse;
-    }
-    `;
+    return [
+      iconFonts,
+      css`
+        :host{
+          display:block;
+          position:relative;
+        }
+        .col{
+          display:flex;
+          flex-flow:column nowrap;
+          gap:8px;
+        }
+        .row{
+          display:flex;
+          flex-flow:row nowrap;
+          gap:8px;
+        }
+        .grow{
+          flex-basis:0px;
+          flex-grow:1;
+        }
+        .centering{
+          display:flex;
+          place-items:center;
+          justify-content:center;
+        }
+        .gap-0{
+          gap:0px;
+        }
+        .gap-16{
+          gap:16px;
+        }
+        .main-content{
+          width:100%;
+          height:100%;
+        }
+        .main-content>* + *{
+          border-top:1px solid lightgray;
+        }
+        .pageTitle{
+          padding:8px 16px;
+          font-size:1.6em;
+        }
+        .backdrop{
+          position:absolute;
+          width:100%;
+          height:100%;
+          top:0px;
+          left:0px;
+          background:rgba(0,0,0,.2);
+        }
+        .dialog{
+          background:rgb(240,240,240);
+          min-height:max(100px, min-content);
+          max-height:70vh;
+          height:300px;
+          width:min(max(100px, 100% - 36px), 300px);
+        }
+        .dialog .bar{
+          border-bottom:1px solid lightgray;
+          padding:8px;
+        }
+        .dialog .content{
+          overflow-y:scroll;
+          padding:8px;
+        }
+        .task-item{
+          padding:8px;
+          border-radius:8px;
+          border:1px solid lightgray;
+        }
+        .menu{
+          padding:8px;
+        }
+        textarea{
+          resize:vertical;
+        }
+        .noresize{
+          resize:none;
+        }
+        .task_list{
+          overflow-y:scroll;
+          padding:8px;
+          box-sizing:border-box;
+          flex-direction:column-reverse;
+        }
+      `
+    ];
   }
   constructor() {
     super();
