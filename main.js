@@ -198,7 +198,7 @@ class TaskTimer extends LitElement {
           </div>
           <div class="col grow content" style="overflow-y:scroll">
             <textarea class="noresize grow">${this.tasks.map(task => {
-                return `${task.getTimeStr("from")}～${task.getTimeStr("to")} ${task.name}${task.memo ? `\n${task.memo.split("\n").map(s => "  " + s).join("\n")}` : ""}`;
+                return `${task.getTimeStr("from")}～${task.getTimeStr("to")??task._dt2TimeStr(new Date())} ${task.name}${task.memo ? `\n${task.memo.split("\n").map(s => "  " + s).join("\n")}` : ""}`;
               }).reverse().join("\n")
             }</textarea>
           </div>
