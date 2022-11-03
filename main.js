@@ -9,6 +9,8 @@ import iconFonts from "./libs/iconFonts.js";
 
 const store = new LocalStorageStore(Models);
 
+const addTaskIcon = html`<i style="margin-bottom:-4px">variables</i>`
+
 class TaskTimer extends LitElement {
   static get properties() {
     return {
@@ -146,9 +148,9 @@ class TaskTimer extends LitElement {
             <div class="title grow">
               タスクを追加
             </div>
-            <button @click=${e => {
+            <i @click=${e => {
               this.openAddDialog = false;
-            }}>×</button>
+            }}>close</i>
           </div>
           <div class="col grow content" style="overflow-y:scroll">
             <div class="row">
@@ -163,14 +165,14 @@ class TaskTimer extends LitElement {
                 }}
                 @keydown=${e => { if (e.key === "Enter" && e.ctrlKey) this.addTask(); }}
               >
-              <button
+              <i
                 @click=${e => {
                   this.inputName = "";
                   this.renderRoot.querySelector("#inputName").value = "";
                 }}
               >
-                ×
-              </button>
+                close
+              </i>
             </div>
             <div class="row grow">
               <textarea
@@ -183,14 +185,14 @@ class TaskTimer extends LitElement {
                 }}
                 @keydown=${e => { if (e.key === "Enter" && e.ctrlKey) this.addTask(); }}
               ></textarea>
-              <button
+              <i
                 @click=${e => {
                   this.inputMemo = "";
                   this.renderRoot.querySelector("#inputMemo").value = "";
                 }}
               >
-                ×
-              </button>
+                close
+              </i>
             </div>
             <button @click=${e => { this.addTask(); }}>追加</button>
           </div>
@@ -206,7 +208,7 @@ class TaskTimer extends LitElement {
             <div class="title grow">
               タスク時系列コピー
             </div>
-            <button @click=${e => this.openCopyDialog = false}>×</button>
+            <i @click=${e => this.openCopyDialog = false}>close</i>
           </div>
           <div class="col grow content" style="overflow-y:scroll">
             <textarea class="noresize grow">${this.tasks.map(task => {
@@ -231,7 +233,7 @@ class TaskTimer extends LitElement {
             <div class="title grow">
               テンプレート追加
             </div>
-            <button @click=${e => this.openTemplateDialog = false}>×</button>
+            <i @click=${e => this.openTemplateDialog = false}>close</i>
           </div>
           <div class="col grow content" style="overflow-y:scroll">
             <input @input=${e=>input.label = e.target.value.trim()}></input>
@@ -288,6 +290,7 @@ class TaskTimer extends LitElement {
         
         <div class="row">
           <button
+            class=centering
             ?disabled=${task.to}
             @click=${e => {
               task.complete();
@@ -295,9 +298,10 @@ class TaskTimer extends LitElement {
               this.requestUpdate();
             }}
           >
-            完了
+            <i>done</i>完了
           </button>
           <button
+            class=centering
             ?disabled=${!task.to}
             @click=${e => {
               if (confirm(`タスク名：${task.name} の完了を取り消しますか？`)) {
@@ -307,16 +311,18 @@ class TaskTimer extends LitElement {
               }
             }}
           >
-            未完了
+            <i>undo</i>未完了
           </button>
           <button
+            class=centering
             @click=${e => {
               this.inputName = task.name;
               this.inputMemo = task.memo;
               this.openAddDialog = true;
             }}
-          >複製</button>
+          ><i>content_copy</i>複製</button>
           <button
+            class=centering
             @click=${e => {
               if (confirm(`タスク名：${task.name}を削除しますか？`)) {
                 const idx = this.tasks.findIndex(t => t === task);
@@ -325,13 +331,13 @@ class TaskTimer extends LitElement {
                 this.requestUpdate();
               }
             }}
-          >削除</button>
+          ><i>delete</i>削除</button>
         </div>
       </div>
       <button @click=${e => {
         this.insertTo = i + 1;
         this.openAddDialog = true;
-      }}>＋</button>
+      }}>${addTaskIcon}</button>
     `;
   }
   render() {
@@ -342,14 +348,14 @@ class TaskTimer extends LitElement {
           <button @click=${e => {
             this.insertTo = 0;
             this.openAddDialog = true;
-          }}>＋</button>
+          }}>${addTaskIcon}</button>
           ${repeat(this.tasks, t => t.id, (t, i) => this.taskView(t, i))}
         </div>
         <div class="row menu">
-          <button @click=${e => {
+          <button class=centering @click=${e => {
             this.insertTo = 0;
             this.openAddDialog = true;
-          }}>追加</button>
+          }}>${addTaskIcon}追加</button>
           <div class="row grow">
           ${this.templates.map((template, idx)=>html`
             <button
@@ -370,9 +376,9 @@ class TaskTimer extends LitElement {
             >${template.label}</button>
           `)}
           </div>
-          <button @click=${e => this.openTemplateDialog = true}>テンプレート追加</button>
-          <button @click=${e => this.openCopyDialog = true}>
-            書き出し
+          <button @click=${e => this.openTemplateDialog = true}><i>grid_view</i></button>
+          <button class=centering @click=${e => this.openCopyDialog = true}>
+            <i>list</i>書き出し
           </button>
           <button @click=${e => {
             if (confirm("入力されているタスクを全て削除します。本当によろしいですか？")) {
