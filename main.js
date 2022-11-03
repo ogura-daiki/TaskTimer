@@ -119,7 +119,7 @@ class TaskTimer extends LitElement {
     if (!this.inputName) return;
     this.openAddDialog = false;
     this.tasks.forEach(task => {
-      if (!task.to) task.to = new Date();
+      if (!task.isCompleted()) task.complete();
     });
     this.insertTask(this.insertTo, newTask(this.inputName, this.inputMemo));
     this.#saveTasks();
@@ -244,7 +244,7 @@ class TaskTimer extends LitElement {
           <button
             ?disabled=${task.to}
             @click=${e => {
-              task.to = new Date();
+              task.complete();
               this.#saveTasks();
               this.requestUpdate();
             }}
@@ -255,7 +255,7 @@ class TaskTimer extends LitElement {
             ?disabled=${!task.to}
             @click=${e => {
               if (confirm(`タスク名：${task.name} の完了を取り消しますか？`)) {
-                task.to = undefined;
+                task.cancelComplete();
                 this.#saveTasks();
                 this.requestUpdate();
               }

@@ -17,6 +17,16 @@ const proto = {
     dateTime.setHours(hours);
     dateTime.setMinutes(minutes);
   },
+
+  isCompleted(){
+    return this.to == undefined;
+  },
+  complete(){
+    this.to = new Date();
+  },
+  cancelComplete(){
+    this.to = undefined;
+  },
 };
 
 const newTask = (name, memo="") => {
