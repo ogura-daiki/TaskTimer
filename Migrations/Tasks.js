@@ -5,7 +5,7 @@ const deserializer = (name, value) => {
   const patterns = [
     (name, value) => ({
       cond: ["from", "to"].includes(name),
-      convert: () => [new Date(value), console.log(name, new Date(value))][0],
+      convert: () => new Date(value),
     }),
     (name, value) => ({
       cond: typeof value !== "object",
