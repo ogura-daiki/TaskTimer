@@ -320,6 +320,7 @@ class TaskTimer extends LitElement {
           <button @click=${e => {
             if (confirm("入力されているタスクを全て削除します。本当によろしいですか？")) {
               this.tasks = [];
+              this.#saveTasks();
             }
           }}>
             クリア
