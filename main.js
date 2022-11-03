@@ -346,16 +346,14 @@ class TaskTimer extends LitElement {
             this.insertTo = 0;
             this.openAddDialog = true;
           }}>追加</button>
+          ${this.templates.map(template=>html`
             <button @click=${e => {
               this.insertTo = 0;
-            this.inputName = "トイレ";
+              this.inputName = template.name;
+              this.inputMemo = template.memo;
               this.openAddDialog = true;
-          }}>トイレ</button>
-          <button @click=${e => {
-            this.insertTo = 0;
-            this.inputName = "相談MTG";
-            this.openAddDialog = true;
-          }}>相談MTG</button>
+            }}>${template.label}</button>
+          `)}
           <button @click=${e => this.openTemplateDialog = true}>テンプレート追加</button>
           <button @click=${e => this.openCopyDialog = true}>
             書き出し
