@@ -346,6 +346,7 @@ class TaskTimer extends LitElement {
             this.insertTo = 0;
             this.openAddDialog = true;
           }}>追加</button>
+          <div class="row grow">
           ${this.templates.map((template, idx)=>html`
             <button
               @click=${e => {
@@ -365,6 +366,7 @@ class TaskTimer extends LitElement {
               }}
             >${template.label}</button>
           `)}
+          </div>
           <button @click=${e => this.openTemplateDialog = true}>テンプレート追加</button>
           <button @click=${e => this.openCopyDialog = true}>
             書き出し
