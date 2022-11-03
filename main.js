@@ -356,7 +356,6 @@ class TaskTimer extends LitElement {
                 this.openAddDialog = true;
               }}
               @contextmenu=${e=>{
-                console.log(template);
                 e.preventDefault();
                 if(confirm(`テンプレート：${template.label}を削除しますか？`)){
                   this.templates.splice(idx, 1);
