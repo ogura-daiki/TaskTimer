@@ -4,6 +4,7 @@ import { LitElement, html, css, live, repeat } from "https://cdn.jsdelivr.net/gh
 import LocalStorageStore from 'https://ogura-daiki.github.io/store/LocalStorageStore.js';
 import Models from "./Migrations/index.js";
 import { newTask } from "./Model/Task.js";
+import { newTemplate } from "./Model/Template.js";
 
 const store = new LocalStorageStore(Models);
 
@@ -116,6 +117,9 @@ class TaskTimer extends LitElement {
   #saveTasks(){
     store.set("Tasks", this.tasks);
   }
+  #saveTemplates(){
+    store.set("Templates", this.templates);
+  }
   insertTask(idx, task){
     this.tasks.splice(idx, 0, task);
   }
@@ -226,10 +230,19 @@ class TaskTimer extends LitElement {
             <button @click=${e => this.openTemplateDialog = false}>×</button>
           </div>
           <div class="col grow content" style="overflow-y:scroll">
-            <input ></input>
-            <input ></input>
-            <textarea class="noresize grow"></textarea>
-            <button>追加</button>
+            <input @input=${e=>input.label = e.target.value.trim()}></input>
+            <input @input=${e=>input.name = e.target.value.trim()}></input>
+            <textarea class="noresize grow" @input=${e=>input.memo = e.target.value}></textarea>
+            <button @click=${e=>{
+              if([input.label, input.name].some(v=>!v)){
+                return;
+              }
+              const template = newTemplate(input.label, input.name, input.memo);
+              this.templates.push(template);
+              this.#saveTemplates();
+              this.openTemplateDialog = false;
+              this.requestUpdate();
+            }}>追加</button>
           </div>
         </div>
       </div>
