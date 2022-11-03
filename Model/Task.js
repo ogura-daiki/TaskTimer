@@ -19,7 +19,7 @@ const proto = {
   },
 
   isCompleted(){
-    return this.to == undefined;
+    return this.to != undefined;
   },
   complete(){
     this.to = new Date();
