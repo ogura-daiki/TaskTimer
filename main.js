@@ -1,5 +1,5 @@
 
-import { LitElement, html, css, live, repeat } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
+import { LitElement, html, css, when, repeat } from "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
 
 import LocalStorageStore from 'https://ogura-daiki.github.io/store/LocalStorageStore.js';
 import Models from "./Migrations/index.js";
@@ -384,9 +384,9 @@ class TaskTimer extends LitElement {
           </button>
         </div>
       </div>
-      ${(this.openAddDialog ? () => this.addDialog() : () => "")()}
-      ${(this.openCopyDialog ? () => this.copyDialog() : () => "")()}
-      ${(this.openTemplateDialog ? () => this.templateDialog() : () => "")()}
+      ${when(this.openAddDialog, ()=>this.addDialog())}
+      ${when(this.openCopyDialog, () => this.copyDialog())}
+      ${when(this.openTemplateDialog, () => this.templateDialog())}
     `;
   }
   updated() {
